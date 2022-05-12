@@ -4,7 +4,7 @@ import moment from "moment";
 const initialState = {
   events: [
     {
-      id: new Date().getTime,
+      id: new Date().getTime(),
       title: "Cumple de alguien",
       start: moment(moment().toDate()).format(),
       end: moment(moment().add(2, "hours").toDate()).format(),

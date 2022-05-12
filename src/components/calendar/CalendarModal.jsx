@@ -41,12 +41,12 @@ export const CalendarModal = () => {
   const [dateStart, setdateStart] = useState(now.toDate());
   const [dateEnd, setdateEnd] = useState(nowPlus.toDate());
   const [formValues, setFormValues] = useState(initEvent);
-  const { notes, title, startDate, endDate } = formValues;
+  const { notes, title, start, end } = formValues;
 
   const [titleValid, setTitleValid] = useState(true);
 
   useEffect(() => {
-    activeEvent ? setFormValues(activeEvent): setFormValues(initEvent);
+    activeEvent ? setFormValues(activeEvent) : setFormValues(initEvent);
   }, [activeEvent, setFormValues]);
 
   const handleInputChange = ({ target }) => {
@@ -66,7 +66,7 @@ export const CalendarModal = () => {
     setdateStart(e);
     setFormValues({
       ...formValues,
-      startDate: e,
+      start: e,
     });
   };
 
@@ -74,14 +74,14 @@ export const CalendarModal = () => {
     setdateEnd(e);
     setFormValues({
       ...formValues,
-      endDate: e,
+      end: e,
     });
   };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    const momentStart = moment(startDate);
-    const momentEnd = moment(endDate);
+    const momentStart = moment(start);
+    const momentEnd = moment(end);
     if (momentStart.isSameOrAfter(momentEnd)) {
       console.log("segunda fecha debe ser mayor a la primera");
       return Swal.fire(
@@ -95,11 +95,19 @@ export const CalendarModal = () => {
     }
     setTitleValid(true);
     if (activeEvent) {
-      dispatch(calendarEventUpdate(formValues));
+      dispatch(
+        calendarEventUpdate({
+          ...formValues,
+          start: start.valueOf(),
+          end: end.valueOf(),
+        })
+      );
     } else {
       dispatch(
         calendarEventAddNew({
           ...formValues,
+          start: start.valueOf(),
+          end: end.valueOf(),
           id: new Date().getTime(),
           bgcolor: "#fafafa",
           user: {
@@ -123,7 +131,7 @@ export const CalendarModal = () => {
         className="modal"
         overlayClassName="modal-fondo"
       >
-        <h1> { activeEvent ? 'Editar evento': 'Nuevo evento' } </h1>
+        <h1> {activeEvent ? "Editar evento" : "Nuevo evento"} </h1>
         <hr />
         <form className="container" onSubmit={handleSubmitForm}>
           <div className="form-group">

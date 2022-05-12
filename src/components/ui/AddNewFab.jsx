@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { calendarSetActive } from "../../redux/actions/calendar";
+import { calendarEventClearActive } from "../../redux/actions/calendar";
 import { uiOpenModal } from "../../redux/actions/ui";
 
 export const AddNewFab = () => {
@@ -8,7 +8,7 @@ export const AddNewFab = () => {
 
   const handleAddNew = () => {
     dispatch(uiOpenModal());
-    dispatch(calendarSetActive(null))
+    dispatch(calendarEventClearActive())
   }
   return (
     <button className="btn btn-primary fab" onClick={handleAddNew}>
