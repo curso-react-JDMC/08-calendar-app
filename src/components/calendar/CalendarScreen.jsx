@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar } from "../ui/Navbar";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
@@ -12,6 +12,7 @@ import { uiOpenModal } from "../../redux/actions/ui";
 import { useDispatch, useSelector } from "react-redux";
 import {
   calendarEventClearActive,
+  calendarEventStartLoading,
   calendarSetActive,
 } from "../../redux/actions/calendar";
 import { AddNewFab } from "../ui/AddNewFab";
@@ -37,17 +38,35 @@ const localizer = momentLocalizer(moment); // or globalizeLocalizer
 export const CalendarScreen = () => {
   const dispatch = useDispatch();
   const { events } = useSelector((state) => state.calendar);
-
+  const { uid } = useSelector((state) => state.auth);
+  const eventsDate = [...events].map((event) => {
+    return {
+      ...event,
+      start: moment(event.start).toDate(),
+      end: moment(event.end).toDate(),
+    };
+  });
   const [lastView, setlastView] = useState(
     localStorage.getItem("lastView") || "month"
   );
+
+  //solicita los eventos en la base de datos al iniciar la aplicacion
+  useEffect(() => {
+    dispatch(calendarEventStartLoading());
+  }, [dispatch])
+  
 
   const onDoubleClick = (e) => {
     dispatch(uiOpenModal());
   };
 
   const onSelectEvent = (e) => {
-    dispatch(calendarSetActive(e));
+    const event = {
+      ...e,
+      start: e.start.valueOf(),
+      end: e.end.valueOf(),
+    };
+    dispatch(calendarSetActive(event));
   };
 
   const onViewChange = (e) => {
@@ -61,7 +80,7 @@ export const CalendarScreen = () => {
 
   const eventStartGetter = (event, start, end, isSelected) => {
     const style = {
-      backgroundColor: "#367CF7",
+      backgroundColor: (uid === event.user._id )? "#367CF7":"#465660",
       borderRadius: "0px",
       opacity: 0.8,
       display: "block",
@@ -77,7 +96,7 @@ export const CalendarScreen = () => {
       <Navbar />
       <Calendar
         localizer={localizer}
-        events={events}
+        events={eventsDate}
         startAccessor="start"
         endAccessor="end"
         messages={messages}
