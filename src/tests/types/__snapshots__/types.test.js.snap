@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pruebas en types los types deben ser iguales 1`] = `
+Object {
+  "authChekingFinish": "[auth] Checking finish login state",
+  "authLogin": "[auth] Login",
+  "authLogout": "[auth] Logout",
+  "authStartLogin": "[auth] Start login",
+  "authStartRegister": "[auth] Start register",
+  "authStartTokenRenew": "[auth] Start token renew",
+  "calendarEventAddNew": "[cal] Add new",
+  "calendarEventClearActive": "[cal] Clear active",
+  "calendarEventDelete": "[cal] Event Delete",
+  "calendarEventLoaded": "[cal] Event Loaded",
+  "calendarEventLogout": "[cal] Event Logout",
+  "calendarEventSetActive": "[cal] Set active",
+  "calendarEventUpdate": "[cal] Event Updated",
+  "calendarStartAddNew": "[cal] Start add new",
+  "uiCloseModal": "[ui] Close modal",
+  "uiOpenModal": "[ui] Open modal",
+}
+`;
